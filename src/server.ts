@@ -1,36 +1,41 @@
-import { fastifyCors } from "@fastify/cors";
-import { fastifySwagger } from "@fastify/swagger";
-import { fastifySwaggerUi } from "@fastify/swagger-ui";
-import { fastify } from "fastify";
-import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
-import { env } from "./env";
-import { hello as helloRoute } from "./routes/hello";
+import { fastifyCors } from '@fastify/cors'
+import { fastifySwagger } from '@fastify/swagger'
+import { fastifySwaggerUi } from '@fastify/swagger-ui'
+import { fastify } from 'fastify'
+import {
+  type ZodTypeProvider,
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
+} from 'fastify-type-provider-zod'
+import { env } from './env'
+import { hello as helloRoute } from './routes/hello'
 
-const app = fastify().withTypeProvider<ZodTypeProvider>();
+const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.register(fastifyCors, {
-    origin: true,
-});
+  origin: true,
+})
 
 app.register(fastifySwagger, {
-    openapi: {
-        info: {
-            title: 'NLW Connect',
-            version: '0.0.1',
-        },
+  openapi: {
+    info: {
+      title: 'NLW Connect',
+      version: '0.0.1',
     },
-    transform: jsonSchemaTransform
-});
+  },
+  transform: jsonSchemaTransform,
+})
 
 app.register(fastifySwaggerUi, {
-    routePrefix: '/docs',
-});
+  routePrefix: '/docs',
+})
 
-app.setSerializerCompiler(serializerCompiler);
-app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler)
+app.setValidatorCompiler(validatorCompiler)
 
-app.register(helloRoute);
+app.register(helloRoute)
 
 app.listen({ port: env.PORT }).then(() => {
-    console.log(`Server is running on port ${env.PORT}`);
-});
+  console.log(`Server is running on port ${env.PORT}`)
+})
