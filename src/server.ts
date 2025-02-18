@@ -3,6 +3,7 @@ import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
 import { fastify } from "fastify";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
+import { env } from "./env";
 import { hello as helloRoute } from "./routes/hello";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
@@ -30,6 +31,6 @@ app.setValidatorCompiler(validatorCompiler);
 
 app.register(helloRoute);
 
-app.listen({ port: 3333 }).then(() => {
-    console.log("Server is running on port 3333");
+app.listen({ port: env.PORT }).then(() => {
+    console.log(`Server is running on port ${env.PORT}`);
 });
